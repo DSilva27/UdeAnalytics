@@ -1,0 +1,219 @@
+from twitter.utils import *
+
+class keyword_tweets:
+
+    """
+    Collects tweets of the social-media content in Twitter when hashtag is given.
+    :param tweets: Unique identification keyword for every social-media tweets in Twitter.
+    :returns: Returns all the tweets based on keywords.
+    """
+
+    def __init__(self, keyword):
+        self.keyword = keyword
+        start_time = datetime.now()
+        options = Options()
+        options.headless = True
+        options=options
+        browser = webdriver.Chrome(options=options)
+        browser.get("https://twitter.com/search?q=" + str('+'.join(self.keyword.split())))
+
+        while browser.find_element_by_tag_name('div'):
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time_delta = datetime.now() - start_time
+            sys.stdout.write('\r' + str("calculating time") + "  " + str(time_delta.seconds) +  "  " + "seconds taken to parse all the tweets from twitter" + '\r')
+            sys.stdout.flush()
+            if time_delta.seconds >= 150:
+                break
+
+        soup = BeautifulSoup(browser.page_source, 'lxml')
+        browser.quit()
+
+        tweets_count = soup.select('.TweetTextSize')
+        sys.stdout.write('\r' + "\n" + str("total tweets are") + " : " + str(len(tweets_count)) + '\r')
+        sys.stdout.flush()
+
+        analyser = SentimentIntensityAnalyzer()
+        neu_sum, neg_sum, compound_sum, pos_sum, count = 0,0,0,0,0
+
+        # Create our list of punctuation marks
+        punctuations = string.punctuation
+
+        # Create our list of stopwords
+        nlp = spacy.load('en')
+
+        # Load English tokenizer, tagger, parser, NER and word vectors
+        parser = English()
+
+        # Creating our tokenizer function
+        def spacy_tokenizer(sentence):
+            # Creating our token object, which is used to create documents with linguistic annotations.
+            mytokens = parser(sentence)
+
+            # Lemmatizing each token and converting each token into lowercase
+            mytokens = [ word.lemma_.lower().strip() if word.lemma_ != "-PRON-" else word.lower_ for word in mytokens ]
+
+            text = re.sub(r'\b(?:(?:https?|ftp)://)?\w[\w-]*(?:\.[\w-]+)+\S*', '', ' '.join(mytokens))
+            words = re.findall(r'[a-zA-Z0-9:]+', ' '.join(mytokens))
+
+            # return preprocessed list of tokens
+            return ' '.join(words)
+
+        self.original_tweets = [' '.join(item.text.split()) for item in tweets_count]
+        self.cleaned_tweets = [spacy_tokenizer(tweet) for tweet in self.original_tweets]
+        sentiment_score = [analyser.polarity_scores(self.cleaned_tweets[i])['compound'] for i in range(len(self.cleaned_tweets))]
+        polarity_score = [analyser.polarity_scores(self.cleaned_tweets[i]) for i in range(len(self.cleaned_tweets))]
+
+        sentiment = []
+        for item in self.cleaned_tweets:
+            analysis = TextBlob(' '.join(item.split()))
+            # set sentiment
+            if analysis.sentiment.polarity > 0:
+                sentiment.append('positive')
+            elif analysis.sentiment.polarity == 0:
+                sentiment.append('neutral')
+            else:
+                sentiment.append('negative')
+
+        for i in range(len(self.cleaned_tweets)):
+            count += 1
+            score = analyser.polarity_scores(self.cleaned_tweets[i])
+            neu_sum += score['neu']
+            neg_sum += score['neg']
+            pos_sum += score['pos']
+
+        if count:
+            self.final_sentiment_scores = {"neu" : round(neu_sum / count, 3), "neg" : round(neg_sum / count, 3), "pos" : round(pos_sum / count, 3), "compound" : round(compound_sum / count, 3)}
+        else:
+            self.final_sentiment_scores = None
+
+        container = soup.select('.content')
+        names = [item.select_one('strong.fullname').text for item in container]
+        usernames = [item.select_one('span.username').text for item in container]
+        user_ids = [item.select_one('a.account-group')['data-user-id'] for item in container]
+        conversation_ids = [item.select_one('a.tweet-timestamp')['data-conversation-id'] for item in container]
+        dates = [item.select_one('a.tweet-timestamp')['title'] for item in container]
+
+        self.tweets_df = pd.DataFrame({'name' : names,
+                                       'username' : usernames,
+                                       'user_id' : user_ids,
+                                       'conversation_id' : conversation_ids,
+                                       'date' : dates,
+                                       'tweets' : self.original_tweets,
+                                       'cleaned_tweets' : self.cleaned_tweets,
+                                       'sentiment' : sentiment,
+                                       'sentiment_score' : sentiment_score,
+                                       'polarity_scorce' : polarity_score})
+        self.tweets_df['label'] = 0
+        self.tweets_df.loc[self.tweets_df['sentiment_score'] > 0.2, 'label'] = 1
+        self.tweets_df.loc[self.tweets_df['sentiment_score'] < -0.2, 'label'] = -1
+
+        self.make_csv = self.tweets_df.to_csv(str(self.keyword)+'.csv', index=False)
+
+class hashtag_tweets:
+
+    """
+    Collects tweets of the social-media content in Twitter when hashtag is given.
+    :param tweets: Unique identification keyword for every social-media tweets in Twitter.
+    :returns: Returns all the tweets based on hashtag.
+    """
+
+    def __init__(self, hashtag):
+        self.hashtag = hashtag
+        start_time = datetime.now()
+        options = Options()
+        options.headless = True
+        options=options
+        browser = webdriver.Chrome(options=options)
+        browser.get('https://twitter.com/' + 'hashtag/' + str(self.hashtag))
+
+        while browser.find_element_by_tag_name('div'):
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time_delta = datetime.now() - start_time
+            sys.stdout.write('\r' + str("calculating time") + "  " + str(time_delta.seconds) +  "  " + "seconds taken to parse all the tweets from twitter" + '\r')
+            sys.stdout.flush()
+            if time_delta.seconds >= 150:
+                break
+
+        soup = BeautifulSoup(browser.page_source, 'lxml')
+        browser.quit()
+
+        tweets_count = soup.select('.TweetTextSize')
+        sys.stdout.write('\r' + "\n" + str("total tweets are") + " : " + str(len(tweets_count)) + '\r')
+        sys.stdout.flush()
+
+        analyser = SentimentIntensityAnalyzer()
+        neu_sum, neg_sum, compound_sum, pos_sum, count = 0,0,0,0,0
+
+        # Create our list of punctuation marks
+        punctuations = string.punctuation
+
+        # Create our list of stopwords
+        nlp = spacy.load('en')
+
+        # Load English tokenizer, tagger, parser, NER and word vectors
+        parser = English()
+
+        # Creating our tokenizer function
+        def spacy_tokenizer(sentence):
+            # Creating our token object, which is used to create documents with linguistic annotations.
+            mytokens = parser(sentence)
+
+            # Lemmatizing each token and converting each token into lowercase
+            mytokens = [ word.lemma_.lower().strip() if word.lemma_ != "-PRON-" else word.lower_ for word in mytokens ]
+
+            text = re.sub(r'\b(?:(?:https?|ftp)://)?\w[\w-]*(?:\.[\w-]+)+\S*', '', ' '.join(mytokens))
+            words = re.findall(r'[a-zA-Z0-9:]+', ' '.join(mytokens))
+
+            # return preprocessed list of tokens
+            return ' '.join(words)
+
+        self.original_tweets = [' '.join(item.text.split()) for item in tweets_count]
+        self.cleaned_tweets = [spacy_tokenizer(tweet) for tweet in self.original_tweets]
+        sentiment_score = [analyser.polarity_scores(tweet)['compound'] for tweet in self.cleaned_tweets]
+        polarity_score = [analyser.polarity_scores(tweet) for tweet in self.cleaned_tweets]
+
+        sentiment = []
+        for item in self.cleaned_tweets:
+            analysis = TextBlob(' '.join(item.split()))
+            # set sentiment
+            if analysis.sentiment.polarity > 0:
+                sentiment.append('positive')
+            elif analysis.sentiment.polarity == 0:
+                sentiment.append('neutral')
+            else:
+                sentiment.append('negative')
+
+        for i in range(len(self.cleaned_tweets)):
+            count += 1
+            score = analyser.polarity_scores(self.cleaned_tweets[i])
+            neu_sum += score['neu']
+            neg_sum += score['neg']
+            pos_sum += score['pos']
+
+        if count:
+            self.final_sentiment_scores = {"neu" : round(neu_sum / count, 3), "neg" : round(neg_sum / count, 3), "pos" : round(pos_sum / count, 3), "compound" : round(compound_sum / count, 3)}
+        else:
+            self.final_sentiment_scores = None
+
+        container = soup.select('.content')
+        names = [item.select_one('strong.fullname').text for item in container]
+        usernames = [item.select_one('span.username').text for item in container]
+        user_ids = [item.select_one('a.account-group')['data-user-id'] for item in container]
+        conversation_ids = [item.select_one('a.tweet-timestamp')['data-conversation-id'] for item in container]
+        dates = [item.select_one('a.tweet-timestamp')['title'] for item in container]
+
+        self.tweets_df = pd.DataFrame({'name' : names,
+                                       'username' : usernames,
+                                       'user_id' : user_ids,
+                                       'conversation_id' : conversation_ids,
+                                       'date' : dates,
+                                       'tweets' : self.original_tweets,
+                                       'cleaned_tweets' : self.cleaned_tweets,
+                                       'sentiment' : sentiment,
+                                       'sentiment_score' : sentiment_score,
+                                       'polarity_scorce' : polarity_score})
+        self.tweets_df['label'] = 0
+        self.tweets_df.loc[self.tweets_df['sentiment_score'] > 0.2, 'label'] = 1
+        self.tweets_df.loc[self.tweets_df['sentiment_score'] < -0.2, 'label'] = -1
+
+        self.make_csv = self.tweets_df.to_csv(str(self.hashtag)+'.csv', index=False)
