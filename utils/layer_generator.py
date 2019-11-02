@@ -49,10 +49,9 @@ def get_first_users_layer(array):
 
 
 
-def main():
+def main(file = "../ejemplo_api/twitter_data.txt", filters = '@QuinteroCalle'):
 
-    tweets_data = parse_from_txt("../ejemplo_api/twitter_data.txt")
-    filters = '@QuinteroCalle'
+    tweets_data = parse_from_txt(file)
     tweets_C = filterer(filters,tweets_data)        
     common_tweets, retweets = separator(tweets_C)
     users = get_first_users_layer(common_tweets)
