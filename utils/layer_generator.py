@@ -1,7 +1,7 @@
 '''
 Tareas 1 y 2
 '''
-
+#DavidSS0397 imports
 import pandas as pd
 import re
 import numpy as np
@@ -23,8 +23,18 @@ def word_in_text(word, text):
         return True
     return False
 
+#Creating a DataFrame with tweet and user"
+def filterer(filter,data):
+    df= pd.DataFrame()
+    df['text'] = list(map(lambda tweet: tweet['text'], data))
+    df['user'] = list(map(lambda tweet: tweet['user']['screen_name'], data))
+    df['user_id'] = list(map(lambda tweet: tweet['user']['id'], data))
+    df = df[df['text'].apply(lambda tweet: word_in_text(filter, tweet))]
 
-def separator(dataframe):
+    return df #Returns a dataframe which contains only the desired information (user and tweet) 
+
+
+def separator(dataframe): #Separates tweets from retweets
 
     retweets = []
     common_tweets = []
@@ -38,19 +48,7 @@ def separator(dataframe):
         else:
             retweets.append([user,tweet,user_id])
 
-    return np.array(common_tweets), np.array(retweets)
-
-
-#Creating a DataFrame with tweet and user"
-def filterer(filter,data):
-    df= pd.DataFrame()
-    df['text'] = list(map(lambda tweet: tweet['text'], data))
-    df['user'] = list(map(lambda tweet: tweet['user']['screen_name'], data))
-    df['user_id'] = list(map(lambda tweet: tweet['user']['id'], data))
-    
-    df = df[df['text'].apply(lambda tweet: word_in_text(filter, tweet))]
-
-    return df
+    return np.array(common_tweets), np.array(retweets) #Returns an array with tweet,user for each entry
 
 
 def get_first_users_layer(array, metric_cut):
