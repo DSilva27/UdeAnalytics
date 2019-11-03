@@ -14,6 +14,7 @@ import tweepy
 from tp_auth import api_auth
 import datetime
 
+
 def word_in_text(word, text):
     word = word.lower()
     text = text.lower()
@@ -22,23 +23,6 @@ def word_in_text(word, text):
         return True
     return False
 
-def separator(dataframe):
-
-    retweets = []
-    common_tweets = []
-    
-    for user, tweet in zip(dataframe['user'], dataframe['text']):
-        match = re.search(r'^\bRT\b', tweet)
-        
-        if match == None:
-            common_tweets.append([user,tweet])
-        
-        else:
-            retweets.append([user,tweet])
-
-    return np.array(common_tweets), np.array(retweets)
-
-
 #Creating a DataFrame with tweet and user"
 def filterer(filter,data):
     df= pd.DataFrame()
@@ -46,7 +30,25 @@ def filterer(filter,data):
     df['user'] = list(map(lambda tweet: tweet['user']['screen_name'], data))
     df = df[df['text'].apply(lambda tweet: word_in_text(filter, tweet))]
 
-    return df
+    return df #Returns a dataframe which contains only the desired information (user and tweet) 
+
+def separator(dataframe): #Separates tweets from retweets
+
+    retweets = []
+    common_tweets = []
+    
+    for user, tweet in zip(dataframe['user'], dataframe['text']):
+        match = re.search(r'^\bRT\b', tweet) #Looks for "RT"
+        
+        if match == None:
+            common_tweets.append([user,tweet])
+        
+        else:
+            retweets.append([user,tweet])
+
+    return np.array(common_tweets), np.array(retweets) #Returns an array with tweet,user for each entry
+
+
 
 def get_first_users_layer(array, metric_cut):
     dataframe = pd.DataFrame(array, columns = ["User","Tweet"])
