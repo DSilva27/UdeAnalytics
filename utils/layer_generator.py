@@ -1,7 +1,7 @@
 '''
 Tareas 1 y 2
 '''
-
+#DavidSS0397 imports
 import pandas as pd
 import re
 import numpy as np
