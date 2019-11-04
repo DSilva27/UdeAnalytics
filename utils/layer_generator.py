@@ -14,6 +14,8 @@ import tweepy
 from tp_auth import api_auth
 import datetime
 
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def word_in_text(word, text):
     word = word.lower()
@@ -144,16 +146,27 @@ def main(file = "../ejemplo_api/twitter_data.txt", filters = '@QuinteroCalle'):
     return users
 
 
+# Adds columns for following and followers of all users
+# Only works for this dataset
 def add_follow_list(df):
     
     following = []
     followers = []
     
-    for user_id in df.User_ID:
-        user_following = set(friends_ids(user_id))
+    nfile1 = "../data/data_following.json"
+    data1 = dat_par.parse_from_txt(nfile1)
+    
+    nfile2 = "../data/data_followers.json"
+    data2 = dat_par.parse_from_txt(nfile2)
+    
+    for i, user_id in enumerate(df.User_ID):
+        
+        user_following = set(data1[i]['following'])
+        user_following = set(map(str, user_following))
         following_intersec = user_following.intersection(set(df.User_ID))
         
-        user_followers = set(followers_ids(user_id))
+        user_followers = set(data2[i]['followers'])
+        user_followers = set(map(str, user_followers))
         follower_intersec = user_followers.intersection(set(df.User_ID))
         
         following.append(list(following_intersec))
@@ -165,10 +178,13 @@ def add_follow_list(df):
     return df
 
 
-if __name__ == "__main__":
 
+
+if __name__ == "__main__":
     
     info = main()
+    
+    infop = add_follow_list(info)
     
     
     #add_follow_list(info)
