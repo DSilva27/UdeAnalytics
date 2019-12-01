@@ -15,6 +15,8 @@ def make_graph(file_pahts, directed=True):
     else:
         graph = nx.Graph()
 
+    graph.add_nodes_from(users)
+
     for d_follow, d_following in zip(j_followers, j_following):
         for user in users:
             for f_er, f_ing in zip(d_follow["followers"], d_following["following"]):
@@ -45,6 +47,7 @@ if __name__ == "__main__":
     file_paths = ("../data/data_following.json","../data/data_followers.json")
 
     graph = make_graph(file_paths)
-
+    
     draw_graph(graph)
+    
     
