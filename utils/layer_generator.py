@@ -1,3 +1,4 @@
+
 '''
 Tareas 1 y 2
 '''
@@ -17,6 +18,8 @@ import datetime
 import networkx as nx
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import pairwise_distances
+import matplotlib.pyplot as plt
 def word_in_text(word, text):
     word = word.lower()
     text = text.lower()
@@ -155,36 +158,78 @@ def add_follow_list(df):
     
     nfile1 = "../data/data_following.json"
     data1 = dat_par.parse_from_txt(nfile1)
-    
+
     nfile2 = "../data/data_followers.json"
     data2 = dat_par.parse_from_txt(nfile2)
-    
+
     for i, user_id in enumerate(df.User_ID):
+        if (data1[i]['following']==[0]) or (data2[i]['followers']==[0]):
+
+                following.append(0)
+        #if (data2[i]['followers']==[0]):
+                followers.append(0)
+                #print(i)
+
+
         
-        user_following = set(data1[i]['following'])
-        user_following = set(map(str, user_following))
-        following_intersec = user_following.intersection(set(df.User_ID))
-        
-        user_followers = set(data2[i]['followers'])
-        user_followers = set(map(str, user_followers))
-        follower_intersec = user_followers.intersection(set(df.User_ID))
-        
-        following.append(list(following_intersec))
-        followers.append(list(follower_intersec))
-    
+        else:
+	        user_following = set(data1[i]['following'])
+	        user_following = set(map(str, user_following))
+	        following_intersec = user_following.intersection(set(df.User_ID))
+	        
+	        user_followers = set(data2[i]['followers'])
+	        user_followers = set(map(str, user_followers))
+	        follower_intersec = user_followers.intersection(set(df.User_ID))
+	        
+	        following.append(list(following_intersec))
+	        followers.append(list(follower_intersec))
+
+
     df['Following'] = following
     df['Followers'] = followers
     
     return df
 
+def metric_(infop):
 
+    n_users = len(infop)
+    infop['order'] = np.arange(0,n_users,1)
+    
+    metric = np.zeros((n_users,n_users))
+    
+    for i, user_id in enumerate(infop.User_ID):
+    
+        for following in infop.iloc[i].Following:
+            row = infop[infop.User_ID==following].order
+            metric[i][row] += 1
+        for follower in infop.iloc[i].Followers:
+            row = infop[infop.User_ID==follower].order
+            metric[i][row] += 1
 
+    #distance = pairwise_distances(metric,metric="euclidean")
+    
+    for i in range(n_users):
+        for j in range(n_users):
+            if metric[i][j]<metric[j][i]:
+            	metric[i][j] = metric[j][i]
+
+    if np.allclose(metric, metric.T) != True:
+        print('Metric is not symmetric') 
+    
+    plt.imshow(metric)
+    plt.show()
+
+    return True
 
 if __name__ == "__main__":
     
     info = main()
     
     infop = add_follow_list(info)
+
+    infop = infop[infop.Following!=0] #
+
+    metric_(infop)
     
     
     #add_follow_list(info)
