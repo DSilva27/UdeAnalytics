@@ -1,7 +1,13 @@
 from utils import layer_generator as lg
 from utils import tp_auth as tp
 from utils import data_parser as dp
-import pandas
+# import pandas
+import json
+
+def save_json(json_list, name):
+    with open("data/"+name+".json", "+w") as wfile:
+        json.dump(json_list, wfile)
+
 
 # set date interval of data recollection
 
@@ -23,4 +29,4 @@ api = tp.api_auth("juanpa")
 
 tweets = lg.get_tweetOnDates(api,users[:100],dates)
 
-tweets.to_json("data/tweets_0to100.json")
+save_json(tweets, "tweets_0to100")

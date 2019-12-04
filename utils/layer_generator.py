@@ -95,13 +95,14 @@ def set_date(year,month,day,hour,minute,second=0,microsecond=0):
     return datetime.datetime(year,month,day,hour,minute,second,microsecond)
 
 
-def status_iter(statuses, user, tweets, dl_lim, dh_lim, n, dates):
+def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
     ''' Iterates over the statuses (aka tweets) of an user, and saves the ones 
         between the desired dates (this is used by the get_tweetOnDates function). 
         Returns the updated list of the tweets, and two bool values that indicate 
         whether the desired time interval has been reached '''
 
     tweet_count = 1
+    tweets, date = [],[]
     
     for status in statuses[10*n:10*(n+1)]:
 
@@ -116,9 +117,10 @@ def status_iter(statuses, user, tweets, dl_lim, dh_lim, n, dates):
         if c_date > dates[0] and c_date < dates[1]:
             print("Yey! Tweet count: {}".format(tweet_count))
             tweet_count += 1
-            tweets = tweets.append({"user":user, "date":c_date, "text":status.text}, ignore_index = True)
+            tweets.append(status.text)
+            date.append(str(c_date))
 
-    return tweets, dl_lim, dh_lim
+    return tweets, date, dl_lim, dh_lim
 
 
 def get_tweetOnDates(api, users, dates):
@@ -126,16 +128,14 @@ def get_tweetOnDates(api, users, dates):
         in the "dates" list. Returns data frame with username, date of tweet,
         and tweet text per user'''
     
-    tweets = pd.DataFrame(columns=["user","date","text"])
-
+    tweet_json = []
+    
     usr_count = 0
     
     for user in users:
 
         print("User count: {}".format(usr_count))
         usr_count += 1
-
-        # time_line = api.user_timeline(user)
 
         cursor = tweepy.Cursor(api.user_timeline, user_id=user)
 
@@ -149,13 +149,17 @@ def get_tweetOnDates(api, users, dates):
         except tweepy.TweepError:
             time.sleep(60*15)
             statuses = list(cursor.items(10000))
-                
+
+        t_list, d_list = [],[]
+            
         while date_low_lim*date_high_lim == False and n < len(statuses)/10:
         
-            tweets, date_low_lim, date_high_lim = status_iter(statuses, user, tweets, date_low_lim, date_high_lim, n, dates)
+            t_list, d_list, date_low_lim, date_high_lim = status_iter(statuses, user, date_low_lim, date_high_lim, n, dates)
             n += 1
+
+        tweet_json.append({"user_id":user, "dates":d_list, "tweets":t_list})
             
-    return tweets
+    return tweet_json
 
 
 def main(file = "../ejemplo_api/twitter_data.txt", filters = '@QuinteroCalle'):
