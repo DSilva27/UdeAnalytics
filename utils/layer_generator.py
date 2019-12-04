@@ -150,7 +150,8 @@ def get_tweetOnDates(api, users, dates):
             statuses = list(cursor.items(10000))
 
         except tweepy.TweepError as error:
-            if error[-3:] == "401":
+            if str(error)[-3:] == "401":
+
                 continue
             else:
                 time.sleep(60*15)
