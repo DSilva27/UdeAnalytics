@@ -5,7 +5,7 @@ def api_auth(usr_id):
     ''' Function to authenticate id. Reads credentials from json file. '''
 
     try:
-        with open("keysAndTokens.json","r") as rfile:
+        with open("utils/keysAndTokens.json","r") as rfile:
         
             data = json.load(rfile)
     
