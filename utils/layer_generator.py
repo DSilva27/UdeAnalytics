@@ -149,9 +149,12 @@ def get_tweetOnDates(api, users, dates):
         try:
             statuses = list(cursor.items(10000))
 
-        except tweepy.TweepError:
-            time.sleep(60*15)
-            statuses = list(cursor.items(10000))
+        except tweepy.TweepError as error:
+            if error[-3:] == "401":
+                continue
+            else:
+                time.sleep(60*15)
+                statuses = list(cursor.items(10000))
 
         t_list, d_list = [],[]
             
