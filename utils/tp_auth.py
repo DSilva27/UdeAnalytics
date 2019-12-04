@@ -8,7 +8,7 @@ def api_auth(usr_id):
         with open("keysAndTokens.json","r") as rfile:
         
             data = json.load(rfile)
-    
+            
             usr_found = False
             for usr in data:
                 if usr["user_id"] == usr_id:
@@ -28,7 +28,8 @@ def api_auth(usr_id):
          with open("utils/keysAndTokens.json","r") as rfile:
         
             data = json.load(rfile)
-    
+            
+            usr_found = False
             for usr in data:
                 if usr["user_id"] == usr_id:
                     auth = tweepy.OAuthHandler(usr["API_key"], usr["API_secret_key"])
@@ -36,10 +37,11 @@ def api_auth(usr_id):
                 
                     api = tweepy.API(auth)
 
-                    return api
+                    usr_found = True 
 
-                else:
-                    raise ValueError("User ID not found.")
+                    return api
+            if not usr_found:
+                raise ValueError("User ID not found.")
 
 
 def get_credentials(usr_id):
