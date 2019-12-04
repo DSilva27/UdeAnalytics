@@ -6,13 +6,21 @@ import pandas as pd
 import re
 import numpy as np
 import json
-import data_parser as dat_par
 
 '''jumarulanda imports'''
 
 import tweepy
-from tp_auth import api_auth
 import datetime
+import time
+
+if __name__ == "__main__":
+    ''' to import modules on a code outside of utils/ while importing this module '''
+    import data_parser as dat_par
+    from tp_auth import api_auth
+else:
+    from utils import data_parser
+    from utils import tp_auth
+
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -84,7 +92,7 @@ Tareas 3 y 4
 def set_date(year,month,day,hour,minute,second=0,microsecond=0):
     ''' Creates a datetime object. This allows to compare 
         the date of creation from the tweets '''
-    return datetime.datetime(year,month,day,hour,minute,second=0,microsecond=0)
+    return datetime.datetime(year,month,day,hour,minute,second,microsecond)
 
 
 def status_iter(statuses, user, tweets, dl_lim, dh_lim, n, dates):
@@ -92,6 +100,8 @@ def status_iter(statuses, user, tweets, dl_lim, dh_lim, n, dates):
         between the desired dates (this is used by the get_tweetOnDates function). 
         Returns the updated list of the tweets, and two bool values that indicate 
         whether the desired time interval has been reached '''
+
+    tweet_count = 1
     
     for status in statuses[10*n:10*(n+1)]:
 
@@ -104,6 +114,8 @@ def status_iter(statuses, user, tweets, dl_lim, dh_lim, n, dates):
             dl_lim = True
         
         if c_date > dates[0] and c_date < dates[1]:
+            print("Yey! Tweet count: {}".format(tweet_count))
+            tweet_count += 1
             tweets = tweets.append({"user":user, "date":c_date, "text":status.text}, ignore_index = True)
 
     return tweets, dl_lim, dh_lim
@@ -116,17 +128,27 @@ def get_tweetOnDates(api, users, dates):
     
     tweets = pd.DataFrame(columns=["user","date","text"])
 
+    usr_count = 0
+    
     for user in users:
 
-        time_line = api.user_timeline(user)
+        print("User count: {}".format(usr_count))
+        usr_count += 1
 
-        cursor = tweepy.Cursor(api.user_timeline, screen_name = user)
+        # time_line = api.user_timeline(user)
+
+        cursor = tweepy.Cursor(api.user_timeline, user_id=user)
 
         date_low_lim, date_high_lim = False, False
 
         n = 0
+        
+        try:
+            statuses = list(cursor.items(10000))
 
-        statuses = list(cursor.items(1000))
+        except tweepy.TweepError:
+            time.sleep(60*15)
+            statuses = list(cursor.items(10000))
                 
         while date_low_lim*date_high_lim == False and n < len(statuses)/10:
         
@@ -195,7 +217,7 @@ if __name__ == "__main__":
     # common_tweets, retweets = separator(tweet_c)
     # users, users_sorted = get_first_users_layer(common_tweets,0.04)
 
-    # api = api_auth("juanpa")
+    # api = tp_auth.api_auth("juanpa")
 
     # dates = [set_date(2019,10,27,0,0), set_date(2019,10,30,0,0)]
     

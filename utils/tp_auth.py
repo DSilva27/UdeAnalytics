@@ -3,21 +3,40 @@ import json
         
 def api_auth(usr_id):
     ''' Function to authenticate id. Reads credentials from json file. '''
-    with open("keysAndTokens.json","r") as rfile:
+
+    try:
+        with open("keysAndTokens.json","r") as rfile:
         
-        data = json.load(rfile)
+            data = json.load(rfile)
     
-        for usr in data:
-            if usr["user_id"] == usr_id:
-                auth = tweepy.OAuthHandler(usr["API_key"], usr["API_secret_key"])
-                auth.set_access_token(usr["acces_token"], usr["acces_token_secret"])
+            for usr in data:
+                if usr["user_id"] == usr_id:
+                    auth = tweepy.OAuthHandler(usr["API_key"], usr["API_secret_key"])
+                    auth.set_access_token(usr["acces_token"], usr["acces_token_secret"])
                 
-                api = tweepy.API(auth)
+                    api = tweepy.API(auth)
 
-                return api
+                    return api
 
-            else:
-                raise ValueError("User ID not found.")
+                else:
+                    raise ValueError("User ID not found.")
+
+    except FileNotFoundError:
+         with open("utils/keysAndTokens.json","r") as rfile:
+        
+            data = json.load(rfile)
+    
+            for usr in data:
+                if usr["user_id"] == usr_id:
+                    auth = tweepy.OAuthHandler(usr["API_key"], usr["API_secret_key"])
+                    auth.set_access_token(usr["acces_token"], usr["acces_token_secret"])
+                
+                    api = tweepy.API(auth)
+
+                    return api
+
+                else:
+                    raise ValueError("User ID not found.")
 
 
 def get_credentials(usr_id):
