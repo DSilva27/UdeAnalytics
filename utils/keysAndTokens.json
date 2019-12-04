@@ -13,6 +13,13 @@
 	"API_secret_key": "ST42Rjo0d6MBqJYL2Wbba0o3sSdByN1Ds1D2F0tYoiZN5v1Nrx",
 	"acces_token": "1085741390527692800-v73KoVugFbFTXOu3dkIIxqIYeVLnkt",
 	"acces_token_secret": "63mbPu6TZtE9gfsduUk546Va1ouV1PHfhH43pqPDRdRXj"
+    },
+    {
+	"user_id": "Vadd",
+	"API_key": "TdZCnBMUBh94Ta9c90sqBfJdJ",
+	"API_secret_key": "AREK5EdakGEZNCENoVmBO9PobmnyhiuHL1B2SIsKGcFQvkF8Nx",
+	"acces_token": "378955945-y3gH0wJtt8i6A9fkgLT7nrXFmeRdJvv09LiiINmk",
+	"acces_token_secret": "iP1tflr986eYcJZMAm7A3VUicaCs2cQS5nWSm6NtPQ12X"
     }
 ]
 ]
