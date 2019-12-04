@@ -9,6 +9,8 @@
     - DSS: 100-199
     - Vadd: 200-299
     - CH212: 300-399
+    
+4) Run on_dates_data.py
 
 ## Tasks assigned on 03/12/19
 
