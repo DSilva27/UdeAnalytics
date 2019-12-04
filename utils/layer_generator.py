@@ -151,7 +151,6 @@ def get_tweetOnDates(api, users, dates):
 
         except tweepy.TweepError as error:
             if str(error)[-3:] == "401":
-
                 continue
             else:
                 time.sleep(60*15)
