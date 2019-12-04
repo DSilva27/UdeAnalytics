@@ -19,4 +19,4 @@
 
 EdgeWa&b = (W1*RT_ab) + (W2*Qtd_ab) + (W3.Rep_ab) + i*W4; i = 0, 1, 2
 
-Node_a = $\frac{\# tweets_Daniel}{\# Tweets_total}$
+Node_a = tweets_Daniel / #Tweets_total
