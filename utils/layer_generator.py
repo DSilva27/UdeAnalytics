@@ -118,7 +118,7 @@ def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
             dl_lim = True
         
         if c_date > dates[0] and c_date < dates[1]:
-            print("Yey! Tweet count: {}".format(tweet_count))
+            #print("Yey! Tweet count: {}".format(tweet_count))
             tweet_count += 1
             tweets.append(status.text)
             date.append(str(c_date))
@@ -135,9 +135,11 @@ def get_tweetOnDates(api, users, dates):
     
     usr_count = 0
     
+    print('[')
+    
     for user in users:
 
-        print("User count: {}".format(usr_count))
+        #print("User count: {}".format(usr_count))
         usr_count += 1
 
         cursor = tweepy.Cursor(api.user_timeline, user_id=user)
@@ -152,6 +154,7 @@ def get_tweetOnDates(api, users, dates):
         except tweepy.TweepError as error:
             if str(error)[-3:] == "401":
                 continue
+            
             else:
                 time.sleep(60*15)
                 statuses = list(cursor.items(20000))
@@ -163,9 +166,11 @@ def get_tweetOnDates(api, users, dates):
             t_list, d_list, date_low_lim, date_high_lim = status_iter(statuses, user, date_low_lim, date_high_lim, n, dates)
             n += 1
 
-        tweet_json.append({"user_id":user, "dates":d_list, "tweets":t_list})
+        #tweet_json.append({"user_id":user, "dates":d_list, "tweets":t_list})
+        print('{"user_id\":', user, '\"dates\":', d_list, '\"tweets\":', t_list, '}')
             
-    return tweet_json
+    print(']')
+    return #tweet_json
 
 
 def main(file = "../ejemplo_api/twitter_data.txt", filters = '@QuinteroCalle'):
