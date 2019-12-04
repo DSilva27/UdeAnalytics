@@ -18,8 +18,8 @@ if __name__ == "__main__":
     import data_parser as dat_par
     from tp_auth import api_auth
 else:
-    from utils import data_parser
-    from utils import tp_auth
+    from utils import data_parser as dat_par
+    from utils import tp_auth as api_auth
 
 
 import networkx as nx
