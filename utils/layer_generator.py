@@ -173,7 +173,7 @@ def get_tweetOnDates(api, users, dates):
     return #tweet_json
 
 
-def main(file = "../ejemplo_api/twitter_data.txt", filters = '@QuinteroCalle'):
+def main(file = "../data/twitter_data.txt", filters = '@QuinteroCalle'):
 
     tweets_data = dat_par.parse_from_txt(file)
     tweets_C = filterer(filters,tweets_data)        
