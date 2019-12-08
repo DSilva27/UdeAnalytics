@@ -31,6 +31,7 @@ Node_a = tweets_Daniel / #Tweets_total
 # Infomap
 https://www.mapequation.org/infomap/
 
+
 ## Credits
 
 Ideas were taken from the following sources:
