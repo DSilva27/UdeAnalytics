@@ -5,7 +5,11 @@ def api_auth(usr_id):
     ''' Function to authenticate id. Reads credentials from json file. '''
 
     try:
+<<<<<<< HEAD:data_mining/lib/tp_auth.py
         with open("../data/keysAndTokens.json","r") as rfile:
+=======
+        with open("keysAndTokens.json","r") as rfile:
+>>>>>>> c048a71e359ecf4bf1668be3778bb18c8367a245:utils/tp_auth.py
         
             data = json.load(rfile)
             

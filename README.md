@@ -28,6 +28,9 @@ EdgeWa&b = (W1&#215;RT_ab) + (W2&#215;Qtd_ab) + (W3&#215;Rep_ab) + i&#215;W4; i 
 
 Node_a = tweets_Daniel / #Tweets_total
 
+# Infomap
+https://www.mapequation.org/infomap/
+
 
 ## Credits
 
