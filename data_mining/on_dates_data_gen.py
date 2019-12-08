@@ -1,6 +1,11 @@
-from utils import layer_generator as lg
-from utils import tp_auth as tp
-from utils import data_parser as dp
+#-------------------------------------------------------
+# This file ....
+# Created by Jumarulanda
+#-------------------------------------------------------
+
+import lib.layer_generator as lg
+import lib.tp_auth as tp
+import lib.data_parser as dp
 # import pandas
 import json
 
@@ -19,7 +24,7 @@ dates = (date_0, date_f)
 
 # get users from the followers of Daniel Quintero
 
-json_following = dp.parse_from_txt("data/data_followers.json")
+json_following = dp.parse_from_txt("../data/data_followers.json")
 users = [json_dict["user_id"] for json_dict in json_following]
 
 
