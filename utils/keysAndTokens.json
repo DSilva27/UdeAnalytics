@@ -19,5 +19,12 @@
 	"API_secret_key": "AREK5EdakGEZNCENoVmBO9PobmnyhiuHL1B2SIsKGcFQvkF8Nx",
 	"acces_token": "378955945-y3gH0wJtt8i6A9fkgLT7nrXFmeRdJvv09LiiINmk",
 	"acces_token_secret": "iP1tflr986eYcJZMAm7A3VUicaCs2cQS5nWSm6NtPQ12X"
+    },
+    {
+	"user_id": "CH212",
+	"API_key": "gKuOtDXsEXjmDU6XxVkhzXQ6H",
+	"API_secret_key": "G2erisvVMHZx8naorJrnrUivKmJyIK83VYzp91VDzYeQdwRKtJ",
+	"acces_token": "1202076224585109504-vNWPeKsOK5oyc02pRvG0Vs0NDvi6pT",
+	"acces_token_secret": "qFYPfJhAapJQGD1wqEjOLa8REepZecejEzvU5h0KUNRLM"
     }
 ]
