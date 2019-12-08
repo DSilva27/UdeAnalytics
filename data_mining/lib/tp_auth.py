@@ -5,7 +5,7 @@ def api_auth(usr_id):
     ''' Function to authenticate id. Reads credentials from json file. '''
 
     try:
-        with open("utils/keysAndTokens.json","r") as rfile:
+        with open("../data/keysAndTokens.json","r") as rfile:
         
             data = json.load(rfile)
             
@@ -25,7 +25,7 @@ def api_auth(usr_id):
                 raise ValueError("User ID not found.")
 
     except FileNotFoundError:
-         with open("utils/keysAndTokens.json","r") as rfile:
+         with open("../data/keysAndTokens.json","r") as rfile:
         
             data = json.load(rfile)
             

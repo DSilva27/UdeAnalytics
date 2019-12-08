@@ -1,102 +1,8 @@
-
-'''
-Tareas 1 y 2
-'''
-#DavidSS0397 imports
-import pandas as pd
-import re
-import numpy as np
-import json
-
-'''jumarulanda imports'''
-
 import tweepy
 import datetime
 import time
-
-if __name__ == "__main__":
-    ''' to import modules on a code outside of utils/ while importing this module '''
-    import data_parser as dat_par
-    from tp_auth import api_auth
-else:
-    from utils import data_parser as dat_par
-    from utils import tp_auth as api_auth
-
-
-import networkx as nx
-import matplotlib.pyplot as plt
-
-from sklearn.metrics import pairwise_distances
-import matplotlib.pyplot as plt
-def word_in_text(word, text):
-    word = word.lower()
-    text = text.lower()
-    match = re.search(word, text)
-    if match:
-        return True
-    return False
-
-#Creating a DataFrame with tweet and user"
-def filterer(filter,data):
-    df= pd.DataFrame()
-    df['text'] = list(map(lambda tweet: tweet['text'], data))
-    df['user'] = list(map(lambda tweet: tweet['user']['screen_name'], data))
-    df['user_id'] = list(map(lambda tweet: tweet['user']['id'], data))
-    df = df[df['text'].apply(lambda tweet: word_in_text(filter, tweet))]
-
-    return df #Returns a dataframe which contains only the desired information (user and tweet) 
-
-
-def separator(dataframe): #Separates tweets from retweets
-
-    retweets = []
-    common_tweets = []
-    
-    for user, tweet, user_id in zip(dataframe['user'], dataframe['text'], dataframe['user_id']):
-        match = re.search(r'^\bRT\b', tweet)
-        
-        if match == None:
-            common_tweets.append([user,tweet,user_id])
-        
-        else:
-            retweets.append([user,tweet,user_id])
-
-    return np.array(common_tweets), np.array(retweets) #Returns an array with tweet,user for each entry
-
-
-def get_first_users_layer(array, metric_cut):
-    dataframe = pd.DataFrame(array, columns = ["User","Tweet","User_ID"])
-    
-    # return dataframe.groupby("User").size().sort_values(ascending = False).head()
-    
-    ''' jumarulanda '''
-
-    ''' Now each user has it's metric calculated with respect to the centroid
-     (tweets_by_user/num_of_tweets). Only users with metric above metric_cut are selected '''
-    
-    n_tweets = array.shape[0]
-    
-    agg = {'User_ID':'first', 'Tweet':lambda x: x.count()/n_tweets}
-    
-    user_group = dataframe.groupby("User").agg(agg).sort_values(by='Tweet', ascending = False)
-    #user_group = dataframe.groupby("User").size().sort_values(ascending = False)/n_tweets
-    
-    sel_users = user_group[user_group.Tweet > metric_cut]
-    #sel_users = user_group.loc[user_group > metric_cut]
-    
-    return sel_users
-    #return sel_users.index.values, sel_users
-
-
-'''
-Tareas 3 y 4
-'''
-
-def set_date(year,month,day,hour,minute,second=0,microsecond=0):
-    ''' Creates a datetime object. This allows to compare 
-        the date of creation from the tweets '''
-    return datetime.datetime(year,month,day,hour,minute,second,microsecond)
-
+import lib.tp_auth as api_auth
+import lib.data_parser as dat_par
 
 def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
     ''' Iterates over the statuses (aka tweets) of an user, and saves the ones 
@@ -124,6 +30,11 @@ def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
             date.append(str(c_date))
 
     return tweets, date, dl_lim, dh_lim
+
+def set_date(year,month,day,hour,minute,second=0,microsecond=0):
+    ''' Creates a datetime object. This allows to compare 
+        the date of creation from the tweets '''
+    return datetime.datetime(year,month,day,hour,minute,second,microsecond)
 
 
 def get_tweetOnDates(api, users, dates):
@@ -171,114 +82,3 @@ def get_tweetOnDates(api, users, dates):
             
     print(']')
     return #tweet_json
-
-
-def main(file = "../data/twitter_data.txt", filters = '@QuinteroCalle'):
-
-    tweets_data = dat_par.parse_from_txt(file)
-    tweets_C = filterer(filters,tweets_data)        
-    common_tweets, retweets = separator(tweets_C)
-    users = get_first_users_layer(common_tweets, 0)
-
-    return users
-
-
-# Adds columns for following and followers of all users
-# Only works for this dataset
-def add_follow_list(df):
-    
-    following = []
-    followers = []
-    
-    nfile1 = "../data/data_following.json"
-    data1 = dat_par.parse_from_txt(nfile1)
-
-    nfile2 = "../data/data_followers.json"
-    data2 = dat_par.parse_from_txt(nfile2)
-
-    for i, user_id in enumerate(df.User_ID):
-        if (data1[i]['following']==[0]) or (data2[i]['followers']==[0]):
-
-                following.append(0)
-        #if (data2[i]['followers']==[0]):
-                followers.append(0)
-                #print(i)
-
-
-        
-        else:
-	        user_following = set(data1[i]['following'])
-	        user_following = set(map(str, user_following))
-	        following_intersec = user_following.intersection(set(df.User_ID))
-	        
-	        user_followers = set(data2[i]['followers'])
-	        user_followers = set(map(str, user_followers))
-	        follower_intersec = user_followers.intersection(set(df.User_ID))
-	        
-	        following.append(list(following_intersec))
-	        followers.append(list(follower_intersec))
-
-
-    df['Following'] = following
-    df['Followers'] = followers
-    
-    return df
-
-def metric_(infop):
-
-    n_users = len(infop)
-    infop['order'] = np.arange(0,n_users,1)
-    
-    metric = np.zeros((n_users,n_users))
-    
-    for i, user_id in enumerate(infop.User_ID):
-    
-        for following in infop.iloc[i].Following:
-            row = infop[infop.User_ID==following].order
-            metric[i][row] += 1
-        for follower in infop.iloc[i].Followers:
-            row = infop[infop.User_ID==follower].order
-            metric[i][row] += 1
-
-    #distance = pairwise_distances(metric,metric="euclidean")
-    
-    for i in range(n_users):
-        for j in range(n_users):
-            if metric[i][j]<metric[j][i]:
-            	metric[i][j] = metric[j][i]
-
-    if np.allclose(metric, metric.T) != True:
-        print('Metric is not symmetric') 
-    
-    #plt.imshow(metric)
-    #plt.show()
-
-    return metric
-
-if __name__ == "__main__":
-    
-    info = main()
-    
-    infop = add_follow_list(info)
-    print(len(infop))
-    infop = infop[infop.Following!=0] #
-    print(len(infop))
-    infop['User_ID'].to_csv('user_id.csv')
-    FF = metric_(infop)
-    #np.savetxt('FF.csv',FF)
-    
-    #add_follow_list(info)
-    
-    # tweet_data = dat_par.parse_from_txt("./tweets.txt")
-    # filters = "pewdiepie"
-    # tweet_c = filterer(filters, tweet_data)
-    # common_tweets, retweets = separator(tweet_c)
-    # users, users_sorted = get_first_users_layer(common_tweets,0.04)
-
-    # api = tp_auth.api_auth("juanpa")
-
-    # dates = [set_date(2019,10,27,0,0), set_date(2019,10,30,0,0)]
-    
-    # tweets = get_tweetOnDates(api, users, dates) 
-    
-    # print(tweets)
