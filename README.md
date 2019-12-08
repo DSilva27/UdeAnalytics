@@ -27,3 +27,13 @@
 EdgeWa&b = (W1&#215;RT_ab) + (W2&#215;Qtd_ab) + (W3&#215;Rep_ab) + i&#215;W4; i = 0, 1, 2
 
 Node_a = tweets_Daniel / #Tweets_total
+
+# Infomap
+https://www.mapequation.org/infomap/
+
+
+## Credits
+
+Ideas were taken from the following sources:
+(esto luego lo cuadramos)
+https://towardsdatascience.com/generating-twitter-ego-networks-detecting-ego-communities-93897883d255

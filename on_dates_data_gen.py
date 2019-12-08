@@ -25,8 +25,9 @@ users = [json_dict["user_id"] for json_dict in json_following]
 
 # set api
 
-api = tp.api_auth("CH212")
 
-lg.get_tweetOnDates(api,users[300:400],dates)
+api = tp.api_auth("ramon")
 
-#save_json(tweets, "tweets_100to199")
+lg.get_tweetOnDates(api,users[186:200],dates)
+#tweets.to_json("data/tweets_100to199.json")
+
