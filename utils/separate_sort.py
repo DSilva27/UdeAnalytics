@@ -1,5 +1,5 @@
 #------------------------------------------------
-# This file.....
+# 
 # Created by vlt-ro, Jumarulanda, DaviSS0397 and CH819
 #------------------------------------------------
 
@@ -60,7 +60,7 @@ def separator(dataframe): # Separates tweets from retweets
         else:
             retweets.append([user,tweet,user_id])
 
-    return np.array(common_tweets), np.array(retweets) # Returns an array with tweet,user for each entry
+    return np.array(common_tweets), np.array(retweets) 
 
 
 def get_first_users_layer(array, metric_cut):
@@ -92,7 +92,7 @@ def add_follow_list(df,nfile1,nfile2):
             nfile1: file contaning the followers of the users
             nfile2: file contaning the users that each user follows
     
-    OUTPUT: df:
+    OUTPUT: df: dataframe contaning users, user's followers, user following 
     '''
     
     following = []
@@ -128,9 +128,12 @@ def add_follow_list(df,nfile1,nfile2):
 
 def follower_following_count(infop):
     '''
-    INPUT:  infop:
+    INPUT:  infop: dataframe contaning users, user's followers, user following
     
-    OUTPUT: metric
+    OUTPUT: metric: symmetric matrix with 0,1,2
+                     0 if two users don't follow each other
+                     1 if one user follow another
+                     2 if two users follow each other
     '''
 
     n_users = len(infop)
@@ -256,7 +259,7 @@ def norm_symmetrize(matrix):
     '''
     INPUT:  matrix: matrix to normalize
     
-    OUTPUT: normalized matrix
+    OUTPUT: normalized and symmetric matrix
     '''
     matrix = matrix/np.max(matrix)
     return (matrix+matrix.T)/2.
@@ -266,7 +269,7 @@ def node_weight(usr_id_scrn,counter):
     INPUT:  usr_id_scrn: files containing id and screen_names of users
             counter: 
     
-    OUTPUT: NodeWeight:
+    OUTPUT: NodeWeight: array with the weight of each user
     '''
 
     NodeWeight = np.ones(len(usr_id_scrn))*1e-7
