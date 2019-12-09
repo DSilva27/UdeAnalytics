@@ -240,7 +240,7 @@ def interaction(typ,usr_id,counter):
     
     for i in range(n_user): #i: row
 
-        a = usr_id[1][i]
+        a = usr_id[1].iloc[i]
 
         try:
             if bool(counter[a][typ]): 
@@ -269,7 +269,7 @@ def node_weight(usr_id_scrn,counter):
     OUTPUT: NodeWeight:
     '''
 
-    NodeWeight = np.ones(len(usr_id_scrn))*0.01
+    NodeWeight = np.ones(len(usr_id_scrn))*1e-7
     for i,count in enumerate(counter):
         if (counter[count]['NTweets'] != 0 and counter[count]['DQTweets'] != 0):
             NodeWeight[i] = counter[count]['DQTweets']/counter[count]['NTweets']
