@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
-- [Main Repository](main%repository)
-- [Data Mining](data%mining)
-- [Credit](credit)
+- [Main Repository](#main%repository)
+- [Data Mining](#data%mining)
+- [Credit](#credit)
 
 ## Main Repository
 ### main_data_extractor
