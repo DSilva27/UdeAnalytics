@@ -37,6 +37,6 @@ try:
     api = tp.api_auth(user)
     lg.get_tweetOnDates(api,users[i:f],dates)
     
-except:
+except NameError:
     print("You must define a user and/or the initial and final indices")
 
