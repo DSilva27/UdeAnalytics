@@ -1,39 +1,45 @@
 # CUFICO_proyecto_final
 
-## Adding your credentials and getting data.
+## Table of Contents
 
-1) Open utils/keysAndTokens.json and edit the file
-2) Add a new dictionary with your credentials and set an username
-3) Configure on_dates_data_gen.py by changing the user and the intervals which are assigned to you.
-    - JP: 0-99
-    - DSS: 100-199
-    - Vadd: 200-299
-    - CH212: 300-399
+- [Main Repository](#main)
+- [Data Mining](#mining)
+- [How to use it](#use)
+- [Credits](#credits)
+
+<a name="main"></a>
+## Main Repository
+### main_data_extractor
+Gathers all the information you've mined and creates a proximity matrix. It also creates two files EdgesW.csv and NodeW.csv
     
+<a name="mining"></a>    
+## Data Mining
+
+### save_data_follow
+
+### streaming_data
+Prints all the tweets and retweets that are tweeted from the moment you run the program. The tweets are filtered by           certain keywords.
+
+<a name="use"></a>  
+## How to use it
+
+1) Open data/keysAndTokens.json and edit the file
+2) Add a new dictionary with your credentials and set an username 
+
 4) Run on_dates_data.py
-
-## Tasks assigned on 03/12/19
-
-1) Usar Infomap -> SS/JP
-2) Sacar datos -> JP
-3) Sacar info para hacer Edges y Nodes -> SS CR
-4) Hacer grafo -> CH212
-5) Hacer estadística -> ??
-
-6) Organizar el código -> ??
-
-## Equation used for redefining the metric
-
-EdgeWa&b = (W1&#215;RT_ab) + (W2&#215;Qtd_ab) + (W3&#215;Rep_ab) + i&#215;W4; i = 0, 1, 2
-
-Node_a = tweets_Daniel / #Tweets_total
-
-# Infomap
-https://www.mapequation.org/infomap/
 
 
 ## Credits
 
-Ideas were taken from the following sources:
-(esto luego lo cuadramos)
-https://towardsdatascience.com/generating-twitter-ego-networks-detecting-ego-communities-93897883d255
+### Infomap
+https://www.mapequation.org/infomap/
+
+### References
+- Shaham. (2018, December 12). Generating A Twitter Ego-Network & Detecting Communities. Retrieved from https://towardsdatascience.com/generating-twitter-ego-networks-detecting-ego-communities-93897883d255
+
+- Moujahid, A. (2014, July 21). Generating A Twitter Ego-Network & Detecting Communities. Retrieved from http://adilmoujahid.com/posts/2014/07/twitter-analytics/
+
+- Blondel, Vincent D et al. “Fast Unfolding of Communities in Large Networks.” Journal of Statistical Mechanics: Theory and    Experiment 2008.10 (2008): P10008. Crossref. Web.
+
+- Bohlin, L., Edler, D., Lancichinetti, A., & Rosvall, M. (2014). Community detection and visualization of networks with the map equation framework. In Measuring Scholarly Impact (pp. 3-34). Springer, Cham.
+
