@@ -37,7 +37,7 @@ https://www.mapequation.org/infomap/
 ### References
 - Shaham. (2018, December 12). Generating A Twitter Ego-Network & Detecting Communities. Retrieved from https://towardsdatascience.com/generating-twitter-ego-networks-detecting-ego-communities-93897883d255
 
-- Moujahid, A. (2014, July 21). Generating A Twitter Ego-Network & Detecting Communities. Retrieved from http://adilmoujahid.com/posts/2014/07/twitter-analytics/
+- Moujahid, A. (2014, July 21). An Introduction to Text Mining using Twitter Streaming API and Python. Retrieved from http://adilmoujahid.com/posts/2014/07/twitter-analytics/
 
 - Blondel, Vincent D et al. “Fast Unfolding of Communities in Large Networks.” Journal of Statistical Mechanics: Theory and    Experiment 2008.10 (2008): P10008. Crossref. Web.
 
