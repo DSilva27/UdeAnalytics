@@ -29,9 +29,9 @@ users = [json_dict["user_id"] for json_dict in json_following]
 
 
 # set api
-user = "username"
-i = 0 #Initial Value
-f = 100 #Final Value
+# user = #username
+# i =  #Initial Value
+# f =  #Final Value
 
 try:
     api = tp.api_auth(user)
