@@ -1,7 +1,5 @@
 #---------------------------------------------------------
-# This file ...
-# To save the data ... e.e
-# Created by DaviSS0397
+#  Created by Adil Moujahid
 #---------------------------------------------------------
 
 # Import the necessary methods from tweepy library
@@ -35,5 +33,5 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
 
-    # This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
-    stream.filter(track=['DanielQuinteroAlcalde','@QuinteroCalle','#QuinteroPorMedellín', 'MedellínAdelante', '@AlfredoRamosM',"#VamosPorMás"])
+    # This line filter Twitter Streams to capture data by the keywords: related to all the candidates
+    stream.filter(track=['DanielQuinteroAlcalde','@QuinteroCalle','#QuinteroPorMedellín', 'MedellínAdelante', '@AlfredoRamosM',"#VamosPorMás", "@santiagoalcalde, #ElDeFico])
