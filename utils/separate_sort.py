@@ -98,7 +98,7 @@ def add_follow_list(df,nfile1,nfile2):
     following = []
     followers = []
     
-    data1 = parse_from_txt(nfile1)
+    data1 = parse_from_txt(nfile1) 
     data2 = parse_from_txt(nfile2)
 
     for i, user_id in enumerate(df.User_ID):
@@ -127,6 +127,11 @@ def add_follow_list(df,nfile1,nfile2):
     return df
 
 def follower_following_count(infop):
+    '''
+    INPUT:  infop:
+    
+    OUTPUT: metric
+    '''
 
     n_users = len(infop)
     
@@ -222,28 +227,47 @@ def RT_REP_Counter(s,users):
     return h
 
 def interaction(typ,usr_id,counter):
+    '''
+    INPUT:  typ: type of interaction (retweet, mention/answer, follower-following)
+            usr_id: list of user id's
+            counter: counts of the type of interaction
+            
+    OUTPUT:
+            matrix: returns the distance matrix for the type of interaction
+    '''
     n_user = len(usr_id)    
     matrix = np.zeros((n_user,n_user))
     
-    for i in range(n_user):
+    for i in range(n_user): #i: row
 
         a = usr_id[1][i]
 
         try:
             if bool(counter[a][typ]): 
                 for b, value in counter[a][typ].items():
-                    j = np.where(usr_id[1] == int(b))[0][0]
+                    j = np.where(usr_id[1] == int(b))[0][0]: #j: column
                     matrix[i][j] = int(value)
 
-        except KeyError:continue
+        except KeyError:continue #Happens when an user doesn't have an input of type 'typ'
         
     return matrix
 
 def norm_symmetrize(matrix):
+    '''
+    INPUT:  matrix: matrix to normalize
+    
+    OUTPUT: normalized matrix
+    '''
     matrix = matrix/np.max(matrix)
     return (matrix+matrix.T)/2.
 
 def node_weight(usr_id_scrn,counter):
+    '''
+    INPUT:  usr_id_scrn: files containing id and screen_names of users
+            counter: 
+    
+    OUTPUT: NodeWeight:
+    '''
 
     NodeWeight = np.ones(len(usr_id_scrn))*0.01
     for i,count in enumerate(counter):
