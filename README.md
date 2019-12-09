@@ -10,7 +10,7 @@
 <a name="main"></a>
 ## Main Repository
 ### main_data_extractor
-Gathers all the information you've mined and creates a proximity matrix. It also creates two files EdgesW.csv and NodeW.csv
+Gathers all the information you've mined and creates a proximity matrix. It also creates two files EdgesW.csv and NodeW.csv, which can be used to create your .net file and visualize your network using [Infomap](#infomap)
     
 <a name="mining"></a>    
 ## Data Mining
@@ -31,6 +31,7 @@ Prints all the tweets and retweets that are tweeted from the moment you run the 
 
 ## Credits
 
+<a name="infomap"></a> 
 ### Infomap
 https://www.mapequation.org/infomap/
 
