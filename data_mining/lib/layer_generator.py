@@ -4,19 +4,21 @@ import time
 import lib.tp_auth as api_auth
 import lib.data_parser as dat_par
 
+
 def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
-    ''' Iterates over the statuses (aka tweets) of an user, and saves the ones 
-        between the desired dates (this is used by the get_tweetOnDates function). 
-        Returns the updated list of the tweets, and two bool values that indicate 
-        whether the desired time interval has been reached 
-        
-        INPUT: statuses: a list of statuese of the user
-               user: the user id
-               dl_lim: (bool) tells if the lower limit of the date interval has been reached
-               dh_lim: (bool) tells if the higher limit of the date interval has been reached
-               n: iteration number
-               dates: date interval tuple'''
+    ''' 
+    Iterates over the statuses (aka tweets) of an user, and saves the ones 
+    between the desired dates (this is used by the get_tweetOnDates function)
+    Returns the updated list of tweets and two bool values that indicate 
+    whether the desired time interval has been reached 
     
+    INPUT: statuses: a list of statuese of the user
+        user: the user id
+        dl_lim: (bool) tells if the lower limit of the date interval has been reached
+        dh_lim: (bool) tells if the higher limit of the date interval has been reached
+        n: iteration number
+        dates: date interval tuple
+    '''
     # tweet count
     tweet_count = 1
     
@@ -25,18 +27,18 @@ def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
     
     for status in statuses[10*n:10*(n+1)]:
         
-        # date of publication of the status
+        # Creation date of the status
         c_date  = status.created_at
 
-        # if the date of publication of the status is higher than the superior limit, dh_lim is set to True
+        # if the creation date is higher than the upper limit, dh_lim is set to True
         if c_date < dates[1] and dh_lim == False:
             dh_lim = True
             
-        # if the date of publication of the status is lower than the superior limit, dh_lim is set to True
+        # if the creation date is lower than the upper limit, dh_lim is set to True
         if c_date > dates[0] and dh_lim == True:
             dl_lim = True
         
-        # when the is between the date limits, the data is stored
+        # when status is between the date limits, the data is stored
         if c_date > dates[0] and c_date < dates[1]:
             #print("Yey! Tweet count: {}".format(tweet_count))
             tweet_count += 1
@@ -45,25 +47,29 @@ def status_iter(statuses, user, dl_lim, dh_lim, n, dates):
             tweets.append(status.text)
             date.append(str(c_date))
     
-    # return the tweet and date data, and the state of the dl_lim and dh_lim variables
+    # return the tweet, date data and the state of the dl_lim and dh_lim variables
     return tweets, date, dl_lim, dh_lim
 
-def set_date(year,month,day,hour,minute,second=0,microsecond=0):
-    ''' Creates a datetime object. This allows to compare 
-        the date of creation from the tweets '''
+
+def set_date(year, month, day, hour, minute, second=0, microsecond=0):
+    ''' 
+    Creates a datetime object. This allows to compare 
+    the date of creation from the tweets '''
     
     # return the date on the datetime format
     return datetime.datetime(year,month,day,hour,minute,second,microsecond)
 
 
 def get_tweetOnDates(api, users, dates):
-    ''' Gets the tweets from users over the pair of dates specified 
-        in the "dates" list. Returns data frame with username, date of tweet,
-        and tweet text per user
-        
-        INPUT: api: the api object from the tweepy API
-               users: list of the id of the users
-               dates: tuple of the date interval for the tweet search'''
+    ''' 
+    Gets the tweets from users over the pair of dates specified 
+    in the "dates" list. Returns data frame with username, date of tweet,
+    and tweet text per user
+    
+    INPUT: api: the api object from the tweepy API
+           users: list of the id of the users
+           dates: tuple of the date interval for the tweet search
+    '''
     
     # list to store the data
     tweet_json = []
@@ -87,7 +93,7 @@ def get_tweetOnDates(api, users, dates):
             statuses = list(cursor.items(20000))
 
         except tweepy.TweepError as error:
-            # If the error is due to a timeout, wait 15 minutes to make the call again
+            # if the error is due to a timeout, wait 15 minutes to make the call again
             if str(error)[-3:] == "429":
                 time.sleep(60*15)
                 statuses = list(cursor.items(20000))
