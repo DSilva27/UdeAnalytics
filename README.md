@@ -7,10 +7,6 @@
 ## data_mining
 ### get_data_follow.sh
 
-### on_dates_date
-
-Script used for the acquisition of tweets of a list of users between a specified date interval
-
 ### save_data_follow
 
 ### streaming_data
