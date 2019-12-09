@@ -1,36 +1,23 @@
 # CUFICO_proyecto_final
 
+## Table of Contents
+
+- [Main Repository](main%repository)
+- [Data Mining](data%mining)
+- [Credit](credit)
+
 ## Main Repository
 ### main_data_extractor
     DESCRIPCIÓN
     
-## data_mining
+## Data Mining
 ### get_data_follow.sh
 
 ### save_data_follow
 
 ### streaming_data
 
-### lib.layer_generator
-
-Collects the tweets of a given user between the interval of two specified dates.
-
-### lib.tp_auth
-
-Facilitates the use of the credentials of the tweeter developer account to use the api. Uses a json file where the credentials for each user are stored.
-
-## utils
-
-### data_parser
-
-### graphs
-
-Contains functions that, with the use of Networkx, builds and draws community graphs of tweeter data.
-
-### separate_sort
-
-
-## Adding your credentials and getting data.
+## Adding your credentials and getting data
 
 1) Open utils/keysAndTokens.json and edit the file
 2) Add a new dictionary with your credentials and set an username
@@ -42,15 +29,6 @@ Contains functions that, with the use of Networkx, builds and draws community gr
     
 4) Run on_dates_data.py
 
-## Tasks assigned on 03/12/19
-
-1) Usar Infomap -> SS/JP
-2) Sacar datos -> JP
-3) Sacar info para hacer Edges y Nodes -> SS CR
-4) Hacer grafo -> CH212
-5) Hacer estadística -> ??
-
-6) Organizar el código -> ??
 
 ## Equation used for redefining the metric
 
