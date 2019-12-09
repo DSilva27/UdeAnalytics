@@ -10,11 +10,10 @@
 <a name="main"></a>
 ## Main Repository
 ### main_data_extractor
-DESCRIPCIÓN
+Gathers all the information you've mined and creates a proximity matrix. It also creates two files EdgesW.csv and NodeW.csv
     
 <a name="mining"></a>    
 ## Data Mining
-### get_data_follow.sh
 
 ### save_data_follow
 
