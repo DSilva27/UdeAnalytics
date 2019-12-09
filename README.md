@@ -2,14 +2,17 @@
 
 ## Table of Contents
 
-- [Main Repository](#main%repository)
-- [Data Mining](#data%mining)
-- [Credit](#credit)
+- [Main Repository](#main)
+- [Data Mining](#mining)
+- [Math](#math)
+- [Credits](#credits)
 
+<a name="main"></a>
 ## Main Repository
 ### main_data_extractor
     DESCRIPCIÓN
     
+<a name="mining"></a>    
 ## Data Mining
 ### get_data_follow.sh
 
@@ -29,7 +32,7 @@
     
 4) Run on_dates_data.py
 
-
+<a name="math"></a>
 ## Equation used for redefining the metric
 
 EdgeWa&b = (W1&#215;RT_ab) + (W2&#215;Qtd_ab) + (W3&#215;Rep_ab) + i&#215;W4; i = 0, 1, 2
