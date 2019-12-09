@@ -1,10 +1,20 @@
+#------------------------------------------------
+# 
+# Created by vlt-ro, Jumarulanda, DaviSS0397 and CH819
+#------------------------------------------------
+
 import json
 import pandas as pd
 
 
-" Parse data from list of tweepy objects "
+# Parse data from list of tweepy objects
 def data_parser(obj_list):
-    ''' Extracts the dictionaries out of the tweepy json objects '''
+    ''' 
+    Extracts the dictionaries out of the tweepy json objects
+    INPUT: obj_list: list of json objects
+           
+    OUTPUT: parsed_data: list of dictionaries, which can be used as usual
+    '''
     
     # list to store the dictionaries
     parsed_data = []
@@ -22,8 +32,13 @@ def data_parser(obj_list):
     return parsed_data
 
 
-" Parse data from txt of tweepy objects "
+# Parse data from txt of tweepy objects 
 def parse_from_txt(filename):
+    ''' 
+    INPUT: filename: path of txt or json file
+           
+    OUTPUT: parsed_data: list of dictionaries, which can be used as usual
+    '''
     
     # open and read the json file in txt format 
     rfile = open(filename, 'r')
@@ -46,10 +61,15 @@ def parse_from_txt(filename):
     return parsed_data
 
 
-" Convert parsed data to data frame with selected columns"
-" Must fix for nested dictionaries "
+# Convert parsed data to data frame with selected columns
+# Nested dictionaries are not implemented
 def data_to_df(parsed_data, dic):
-    # dic: dictionary {column name : attribute}
+    ''' 
+    INPUT: parsed_data: list of dictionaries
+           dic: dictionary with columns to be selected: {column name : attribute}
+           
+    OUTPUT: df: dataframe with selected columns
+    '''
     
     df = pd.DataFrame(columns=list(dic.keys()))
     
