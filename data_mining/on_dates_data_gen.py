@@ -6,7 +6,6 @@
 import lib.layer_generator as lg
 import lib.tp_auth as tp
 import lib.data_parser as dp
-# import pandas
 import json
 
 def save_json(json_list, name):
