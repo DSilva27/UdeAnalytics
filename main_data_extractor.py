@@ -19,7 +19,7 @@ from utils.data_parser import parse_from_txt as ptxt
 
 if __name__ == "__main__":
     
-    # 
+    # Get users that mention @QuinteroCalle
 
     file = "data/twitter_data.txt"
     filters = '@QuinteroCalle'
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     common_tweets, retweets = ss.separator(tweets_C)
     users = ss.get_first_users_layer(common_tweets, 0)
     
-    # 
+    # Create a dataframe with the user's followers and following and eliminate private counts
     file_following = "data/data_following.json"
     file_followers = "data/data_followers.json"
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     n_users = len(infop)
     infop = infop[infop.Following!=0] 
 
-    # Metric
+    # Create a metric based on users interaction
 
     d0to99    = np.squeeze(ptxt("data/tweets_0to99.json"))
     d100to199 = np.squeeze(ptxt("data/tweets_100to199.json"))
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     print("Numero de clusters:",len(groups),file=f)
     print("Numero de clusters con mas de una persona:",len(groups.count().NODE_RANK[groups.count().NODE_RANK>1]),file=f)
 
-
+    # Interactions analysis in each cluster
     for group in groups:
         if len(group[1])>1: 
             usr_id_scrn['bool'] = np.zeros(len(usr_id_scrn))
