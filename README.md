@@ -1,11 +1,5 @@
 # CUFICO_proyecto_final
 
-## Table of Contents
-
-- [Adding credentials](#Adding your credentials and getting data.)
-
-# Description
-
 ## Main Repository
 ### main_data_extractor
     DESCRIPCIÓN
@@ -13,15 +7,9 @@
 ## data_mining
 ### get_data_follow.sh
 
-### on_dates_date## Table of Contents
+### on_dates_date
 
-- [Security](#security)
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-- [API](#api)
-- [Contributing](#contributing)
-- [License](#license)
+Script used for the acquisition of tweets of a list of users between a specified date interval
 
 ### save_data_follow
 
@@ -29,13 +17,19 @@
 
 ### lib.layer_generator
 
+Collects the tweets of a given user between the interval of two specified dates.
+
 ### lib.tp_auth
+
+Facilitates the use of the credentials of the tweeter developer account to use the api. Uses a json file where the credentials for each user are stored.
 
 ## utils
 
 ### data_parser
 
 ### graphs
+
+Contains functions that, with the use of Networkx, builds and draws community graphs of tweeter data.
 
 ### separate_sort
 
