@@ -1,5 +1,31 @@
 # CUFICO_proyecto_final
 
+## Main Repository
+### main_data_extractor
+    DESCRIPCIÓN
+    
+## data_mining
+### get_data_follow.sh
+
+### on_dates_date
+
+### save_data_follow
+
+### streaming_data
+
+### lib.layer_generator
+
+### lib.tp_auth
+
+## utils
+
+### data_parser
+
+### graphs
+
+### separate_sort
+
+
 ## Adding your credentials and getting data.
 
 1) Open utils/keysAndTokens.json and edit the file
