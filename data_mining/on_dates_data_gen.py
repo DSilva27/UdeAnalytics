@@ -29,10 +29,14 @@ users = [json_dict["user_id"] for json_dict in json_following]
 
 
 # set api
+user = "username"
+i = 0 #Initial Value
+f = 100 #Final Value
 
-
-api = tp.api_auth("ramon")
-
-lg.get_tweetOnDates(api,users[186:200],dates)
-#tweets.to_json("data/tweets_100to199.json")
+try:
+    api = tp.api_auth(user)
+    lg.get_tweetOnDates(api,users[i:f],dates)
+    
+except:
+    print("You must define a user and/or the initial and final indices")
 
