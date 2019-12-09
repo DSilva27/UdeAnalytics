@@ -4,7 +4,7 @@
 
 - [Main Repository](#main)
 - [Data Mining](#mining)
-- [Math](#math)
+- [How to use it](#use)
 - [Credits](#credits)
 
 <a name="main"></a>
@@ -20,30 +20,20 @@
 
 ### streaming_data
 
-## Adding your credentials and getting data
+<a name="use"></a>  
+## How to use it
 
 1) Open utils/keysAndTokens.json and edit the file
 2) Add a new dictionary with your credentials and set an username
-3) Configure on_dates_data_gen.py by changing the user and the intervals which are assigned to you.
-    - JP: 0-99
-    - DSS: 100-199
-    - Vadd: 200-299
-    - CH212: 300-399
-    
+
 4) Run on_dates_data.py
 
-<a name="math"></a>
-## Equation used for redefining the metric
 
-EdgeWa&b = (W1&#215;RT_ab) + (W2&#215;Qtd_ab) + (W3&#215;Rep_ab) + i&#215;W4; i = 0, 1, 2
-
-Node_a = tweets_Daniel / #Tweets_total
+## Credits
 
 # Infomap
 https://www.mapequation.org/infomap/
 
-
-## Credits
 
 Ideas were taken from the following sources:
 (esto luego lo cuadramos)
