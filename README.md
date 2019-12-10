@@ -10,12 +10,14 @@
 <a name="main"></a>
 ## Main Repository
 ### main_data_extractor
-Gathers all the information you've mined and creates a proximity matrix. It also creates two files EdgesW.csv and NodeW.csv, which can be used to create your .net file and visualize your network using [Infomap](#infomap)
+Gathers all the information you have mined and creates a proximity matrix. It also creates two files EdgesW.csv and NodeW.csv, which can be used to create your .net file and visualize your network using [Infomap](#infomap).
     
 <a name="mining"></a>    
 ## Data Mining
 
 ### save_data_follow
+
+Prints dictionaries on a file with user ID, following and followers. Following are requested first, then followers. To use, run 'get_data_follow.sh'.
 
 ### streaming_data
 Prints all the tweets and retweets that are tweeted from the moment you run the program. The tweets are filtered by           certain keywords.
