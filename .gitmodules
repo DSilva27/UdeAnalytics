@@ -4,3 +4,6 @@
 [submodule "reporte"]
 	path = reporte
 	url = https://git.overleaf.com/5dee9a16eb69360001c39853
+[submodule "Overleaf"]
+	path = Overleaf
+	url = https://github.com/DavidSS0397/Reporte_proyecto_CUFICO.git
