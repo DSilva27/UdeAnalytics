@@ -253,7 +253,7 @@ def interaction(typ, usr_id, counter):
         try:
             if bool(counter[a][typ]): 
                 for b, value in counter[a][typ].items():
-                    j = np.where(usr_id[1] == int(b))[0][0]: #j: column
+                    j = np.where(usr_id[1] == int(b))[0][0] #j: column
                     matrix[i][j] = int(value)
 
         except KeyError:continue #Happens when an user doesn't have an input of type 'typ'
