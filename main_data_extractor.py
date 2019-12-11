@@ -37,7 +37,7 @@ if __name__ == "__main__":
     infop = ss.add_follow_list(users,file_following,file_followers)
     n_users = len(infop)
     infop = infop[infop.Following!=0] 
-
+    print(infop.head())
     # Create a metric based on users interaction
 
     d0to99    = np.squeeze(ptxt("data/tweets_0to99.json"))
