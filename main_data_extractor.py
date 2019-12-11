@@ -47,30 +47,16 @@ if __name__ == "__main__":
     d400toend = np.squeeze(ptxt("data/tweets_400toend.json"))
 
     data = [*d0to99, *d100to199, *d200to299, *d300to399, *d400toend]
+    
+    infop['User_ID'].to_csv('data/user_id.csv')
     usr_id_scrn = pd.read_csv("data/user_id.csv", header = None)
     
     counter = ss.RT_REP_Counter(data, usr_id_scrn)
-    
+
     RT = ss.interaction('RT',usr_id_scrn,counter)
     REP = ss.interaction('Rep',usr_id_scrn,counter)
     FF = ss.follower_following_count(infop)
-
-    RT = ss.norm_symmetrize(RT)
-    REP = ss.norm_symmetrize(REP)
-    FF = ss.norm_symmetrize(FF)
-
-    W1 = 0.25 
-    W2 = 0.5
-    W3 = 0.75
-    EdgeW = RT*W1 + REP*W2 + FF*W3
-
-    np.savetxt('data/EdgesW.csv',EdgeW)
-
-    NodeWeight = ss.node_weight(usr_id_scrn,counter)
-
-    np.savetxt('data/NodeW.csv',NodeWeight)
-
-
+    
     clusters = pd.read_csv("data/node_segmentation.csv",sep=';' )
     groups = clusters.groupby('NODE_NUM')     
 
@@ -86,7 +72,20 @@ if __name__ == "__main__":
     print("Promedio de Rep entre usuarios:",int(np.mean(REP)),file=f)
     print("Numero de clusters:",len(groups),file=f)
     print("Numero de clusters con mas de una persona:",len(groups.count().NODE_RANK[groups.count().NODE_RANK>1]),file=f)
+    
+    RT = ss.norm_symmetrize(RT)
+    REP = ss.norm_symmetrize(REP)
+    FF = ss.norm_symmetrize(FF)
 
+    W1 = 0.25 
+    W2 = 0.5
+    W3 = 0.75
+    EdgeW = RT*W1 + REP*W2 + FF*W3
+    np.savetxt('data/EdgesW.csv',EdgeW)
+
+    NodeWeight = ss.node_weight(usr_id_scrn,counter)
+    np.savetxt('data/NodeW.csv',NodeWeight)
+    
     # Interactions analysis in each cluster
     for group in groups:
         if len(group[1])>1: 
@@ -106,7 +105,7 @@ if __name__ == "__main__":
 
             FF = ss.follower_following_count(info_cluster)
             
-            print("----------------Estadistica Cluster %i-------------"%group[0],file=f)
+            print("----------------Estadistica Cluster %s-------------"%group[0],file=f)
             print("Numero de usuarios:",len(group[1]),file=f)
             print("Numero de parejas de usuarios que se siguen entre si:",int(len(FF[FF==2])/2),file=f)
             print("Numero maximo de RT entre usuarios:",int(np.max(RT)),file=f)
@@ -114,4 +113,4 @@ if __name__ == "__main__":
             print("Promedio de RT entre usuarios:",int(np.mean(RT)),file=f)
             print("Promedio de Rep entre usuarios:",int(np.mean(REP)),file=f)
 
-f.close()
+    f.close()
